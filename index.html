@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/calendar.css">
+<script src="./neurons/neuron/latest/neuron.js"></script>
+<script>
+  neuron.config({
+    path: './neurons'
+  });
+</script>
+<style>
+.wrapper{
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+<input type="button" value="上月" id="prevMonth">
+<input type="button" value="下月" id="nextMonth">
+<input type="button" value="去年" id="prevYear">
+<input type="button" value="明年" id="nextYear">
+<span id="year"></span>
+<span id="month"></span>
+<div class="wrapper" id="calendar-wrapper"></div>
+<div  class="wrapper" id="calendar-wrapper-custom-day"></div>
+<input type="button" value="排除周四" id="changeAvail">
+<script>
+_use("calendar",function(Calendar){
+    var cal = new Calendar("#calendar-wrapper").on('change',setHead);
+    var cal2 = new Calendar("#calendar-wrapper-custom-day",{
+      date:new Date(2014,5,1),
+      firstDay:1,
+      availiableDays: function(date){
+        return date.getDay() != 2;
+      }
+    });
+    setHead();
+    function setHead(){
+      year.innerHTML = cal.get('year');
+      month.innerHTML = cal.get('humanMonth');
+    }
+
+    function listen(name){
+      cal.on(name, function(e){
+        console.log(name,":",arguments);
+      });
+      cal2.on(name, function(e){
+        console.log(name,":",arguments);
+      });
+    }
+    listen("pick");
+    listen("hover");
+    listen("mouseleave");
+    prevMonth.onclick = function(){
+      cal.prevMonth();
+    }
+    nextMonth.onclick = function(){
+      cal.nextMonth();
+    }
+    prevYear.onclick = function(){
+      cal.prevYear();
+    }
+    nextYear.onclick = function(){
+      cal.nextYear();
+    }
+    var toggled = false;
+    changeAvail.onclick = function(){
+      toggled = !toggled;
+      if(toggled){
+        cal2.setAvailableDates(function(date){
+          return date.getDay() != 4;
+        });
+      }else{
+        cal2.setAvailableDates(function(date){
+          return date.getDay() != 2;
+        });
+      }
+    }
+});
+
+</script>
+</body>
+
+</html>
