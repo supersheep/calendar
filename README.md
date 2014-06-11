@@ -1,19 +1,13 @@
 # calendar
 
 generate calendar structure easily
+[![Build Status](http://browserman.dp:9000/api/app/calendar/badge)](http://search.cortexjs.org/package/calendar)
 
 ## Install
 
 ```bash
 $ cortex install calendar --save
 ```
-
-<!--
-Wrap examples with a pair of ```
-使用成对的 ``` 来包裹示例。
-代码块的 ``` 后面需要定义这部分代码的类型。比如上面的代码是 bash 脚本，常用的包括：
-bash, js, json, html, css 等
--->
 
 
 ## Usage
@@ -22,82 +16,94 @@ bash, js, json, html, css 等
 var calendar = require('calendar');
 ```
 
-<!-- 
 
-NOTICE That this is a sample README.md, in order to define the standard way to organize the information of the current package.
-
-Most usually, you should remove unnecessary sections below.
-
-这里仅仅是一个示例README，用于定义标准的书写规范和文档格式。
-大部分时候，如果没有使用到它们，你应该把适当移除这些栏目。
--->
-
-### Class: Calendar(selector)
+### Class: Calendar(selector, options)
 
 ```js
-new Calendar("#calendar-wrapper");
+new Calendar("#calendar-wrapper",{
+  firstDay: 0, // Sunday as firstday
+  defaultDate: new Date(), // today as default date
+  renderDay: function(td){}
+  
+});
 ```
 
-<!-- 
-Simply list arguments
-直接列出参数
--->
 - selector `String|DOMElement` container to create calendar in.
 
 Creates a new calendar instance.
 
 
 
+#### options.weekday `Array` ['日','一','二','三','四','五','六']
 
-<!--
-Only differences are listed below.
-接下来我们只列出不同的地方
--->
-	
-#### .\<method-name\>(foo, bar, [bee], boo)
+  weekdays as titles
 
-<!-- 
-A method of the instance. Usually, they should be listed inside the `Class` section as <h4> with 4 hashes.
-实例（即通过构造器 new 出来的对象）上的方法. 一般来说，实例方法应当在 Class 栏目中，作为 <h4> 标题出现（4个 # 号）
--->
+#### options.defaultDate `Date` new Date()
+
+  default date to show
+
+#### options.firstDay `Number` 0
+
+  first week day, 0 presents for Sunday.
+
+#### options.renderDay `Function` function(td){}
+
+  render the td for custom requirements
+
+#### options.availiableDays `Function` function(date){}
+
+  return true if the passing date is availiable
 
 
-- foo `String='foo'` description of `foo`
-- bar `Boolean=` description of `bar`
-- bee `Object` `[]` indicates that it is an optional parameter
-  - abc `Buffer` a property of `bee`, i.e. `bee.abc`
-- boo `function(arg1, arg2)` what is the method used for
+#### .setYear()
 
-<!--
-type ends with `=`(equal) indicates the default value, default to `undefined`.
-类型后面跟等号（=）表明了这个参数的默认值
--->
+  set year and rerender calendar
 
-<!--
-Notice the definition of function type and optional parameters
-注意函数类型定义的描述，以及可选参数的写法
--->
+#### .setMonth()
+  
+  set month and rerender calendar
 
-#### Event: '\<event-name>'
+#### .prevYear()
+  
+  switch to previous year
 
-<!--
-Event name should be single-quoted.
-事件名称应当使用单引号括起
--->
+#### .nextYear()
+
+  switch to next year
+
+#### .prevMonth()
+    
+  switch to last month
+
+#### .nextMonth()
+  
+  switch to next month
+
+#### .setAvailableDates(func)
+  
+  Set available dates.
+  The passing function is same as `options.availiableDays`
+
+
+#### Event: 'mouseleave'
+
+emits when mouseleave the calendar container
 
 - e `Object` the first parameter of the callback
 
-<!--
-Define the parameters of event handler directly.
-直接开始定义事件回调的参数，而不用累述。
--->
 
+#### Event: 'pick'
 
-### calendar.\<method-name\>(arguments)
+emits when available date is clicked
 
-<!-- 
-The static method.
-静态方法，即不是实例上的方法
--->
+- date: the date you picked
+- elem: the DOM Element of the date
+
+#### Event: 'hover'
+
+emits when date is hovered
+
+- date: the date you hover
+- elem: the DOM Element of the date
 
 

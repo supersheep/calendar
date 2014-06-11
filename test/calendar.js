@@ -1,5 +1,6 @@
 'use strict';
 
+var assert = require('assert');
 var calendar = require('../lib/index');
 var $ = require('jquery');
 
@@ -8,62 +9,69 @@ var assert = require('assert');
 
 describe("description", function() {
   var cal;
+  var container;
   beforeEach(function() {
-    cal = new Calendar("#calendar-wrapper");
+    cal = calendar("#calendar-wrapper", {
+      renderDay: function(td) {
+        td.addClass('custom-class');
+      },
+      weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    });
+    container = cal.get('container');
   });
-  it("should has a method `my_method`", function() {
-    assert.ok('my_method' in calendar);
-  });
-});
 
-var cal = new Calendar("#calendar-wrapper").on('change', setHead);
-var cal2 = calendar("#calendar-wrapper-custom-day", {
-  date: new Date(2014, 5, 1),
-  firstDay: 1,
-  availiableDays: function(date) {
-    return date.getDay() != 2;
-  }
-});
-setHead();
-
-function setHead() {
-  year.innerHTML = cal.get('year');
-  month.innerHTML = cal.get('humanMonth');
-}
-
-function listen(name) {
-  cal.on(name, function(e) {
-    console.log(name, ":", arguments);
+  it('options.defaultDate', function() {
+    var defaultDate = cal.get('defaultDate');
+    console.log(defaultDate);
+    defaultDate.toDateString() == (new Date()).toDateString();
   });
-  cal2.on(name, function(e) {
-    console.log(name, ":", arguments);
+
+  it('options.weekdays', function() {
+    assert(container.find('th').html() == 'Sunday', true);
   });
-}
-listen("pick");
-listen("hover");
-listen("mouseleave");
-prevMonth.onclick = function() {
-  cal.prevMonth();
-}
-nextMonth.onclick = function() {
-  cal.nextMonth();
-}
-prevYear.onclick = function() {
-  cal.prevYear();
-}
-nextYear.onclick = function() {
-  cal.nextYear();
-}
-var toggled = false;
-changeAvail.onclick = function() {
-  toggled = !toggled;
-  if (toggled) {
-    cal2.setAvailableDates(function(date) {
+
+  it('options.renderDay', function() {
+    container.find('td').each(function(i, td) {
+      assert($(td).hasClass('custom-class'));
+    });
+  });
+
+  it('.setYear', function() {
+    cal.setYear(2019);
+    assert(cal.get('year'), 2019);
+  });
+  it('.setMonth', function() {
+    cal.setMonth(9);
+    assert(cal.get('month'), 9);
+    cal.setMonth(13);
+    assert(cal.get('month'), 1);
+    assert(cal.get('humanMonth'), 2);
+  });
+
+
+  it('.prevYear', function() {
+    cal.prevYear();
+    assert(cal.get('year'), 2018);
+  });
+  it('.nextYear', function() {
+    cal.nextYear();
+    assert(cal.get('year'), 2019);
+  });
+  it('.prevMonth', function() {
+    cal.prevMonth();
+    assert(cal.get('month'), 0);
+  });
+  it('.nextMonth', function() {
+    cal.prevMonth();
+    assert(cal.get('month'), 1);
+  });
+
+  it('.setAvailableDates', function() {
+    cal.setAvailableDates(function(date) {
       return date.getDay() != 4;
     });
-  } else {
-    cal2.setAvailableDates(function(date) {
-      return date.getDay() != 2;
+    container.find('tr').find('td:eq(4)').each(function(i, el) {
+      assert($(el).hasClass('ui-calendar-invalid'), true);
     });
-  }
-}
+  });
+});
