@@ -14,6 +14,7 @@ $ cortex install calendar --save
 
 ```js
 var calendar = require('calendar');
+calendar(selector,options);
 ```
 
 
@@ -31,8 +32,6 @@ new Calendar("#calendar-wrapper",{
 - selector `String|DOMElement` container to create calendar in.
 
 Creates a new calendar instance.
-
-
 
 #### options.weekday `Array` ['日','一','二','三','四','五','六']
 
