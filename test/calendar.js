@@ -22,7 +22,6 @@ describe("description", function() {
 
   it('options.defaultDate', function() {
     var defaultDate = cal.get('defaultDate');
-    console.log(defaultDate);
     defaultDate.toDateString() == (new Date()).toDateString();
   });
 
