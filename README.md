@@ -49,9 +49,9 @@ Creates a new calendar instance.
 
   render the td for custom requirements
 
-#### options.availiableDays `Function` function(date){}
+#### options.availableDays `Function` function(date){}
 
-  return true if the passing date is availiable
+  return true if the passing date is available
 
 
 #### .setYear()
@@ -81,7 +81,7 @@ Creates a new calendar instance.
 #### .setAvailableDates(func)
   
   Set available dates.
-  The passing function is same as `options.availiableDays`
+  The passing function is same as `options.availableDays`
 
 
 #### Event: 'mouseleave'

@@ -31,7 +31,7 @@ _use("calendar",function(Calendar){
     var cal2 = new Calendar("#calendar-wrapper-custom-day",{
       date:new Date(2014,5,1),
       firstDay:1,
-      availiableDays: function(date){
+      availableDays: function(date){
         return date.getDay() != 2;
       }
     });
