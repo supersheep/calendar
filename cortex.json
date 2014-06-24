@@ -1,6 +1,6 @@
 {
   "name": "calendar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "generate calendar structure easily",
   "main": "lib/index.js",
   "repository": "git://code.dianpingoa.com/neurons/calendar.git",
